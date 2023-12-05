@@ -21,6 +21,17 @@ db.once('open', () => {
   console.log('Connected to MongoDB');
 });
 
+
+  async function run(){
+
+       
+
+
+  }
+
+  run()
+
+
 app.listen(8800, () => {
   console.log("Backend is listening on port 8800");
 });

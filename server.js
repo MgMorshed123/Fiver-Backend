@@ -4,8 +4,11 @@ import dotenv from 'dotenv';
 import userRoutes from '../api/routes/user.route.js'
 import authRoutes from '../api/routes/auth.route.js'
 dotenv.config();
+import cors from "cors"
 import cookieParser from "cookie-parser";
 const app = express();
+import gigRoutes from '../api/routes/gig.route.js'
+import reviewRoutes from '../api/routes/review.route.js'
 
 // MongoDB URI from environment variables
 const mongoURI = process.env.mongoURI;
@@ -27,13 +30,15 @@ console.log( "token",  process.env.jwt_key)
 
 
 
-
+app.use(cors({origin : "http://localhost:5173", credentials : true}))
 app.use(express.json())
 app.use(cookieParser())
 
  app.use("/api/auth", authRoutes)
  app.use("/api/users", userRoutes)
-
+ app.use("/api/gigs", gigRoutes);
+ app.use("/api/reviews", reviewRoutes);
+ 
 
  app.use((err,req,res,next) => {
 

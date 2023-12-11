@@ -9,7 +9,8 @@ import cookieParser from "cookie-parser";
 const app = express();
 import gigRoutes from '../api/routes/gig.route.js'
 import reviewRoutes from '../api/routes/review.route.js'
-
+import orderRoutes from '../api/routes/order.route.js'
+import conversationRoute from "./routes/conversation.route.js";
 // MongoDB URI from environment variables
 const mongoURI = process.env.mongoURI;
 
@@ -38,7 +39,8 @@ app.use(cookieParser())
  app.use("/api/users", userRoutes)
  app.use("/api/gigs", gigRoutes);
  app.use("/api/reviews", reviewRoutes);
- 
+ app.use("/api/orders", orderRoutes);
+ app.use("/api/conversations", conversationRoute);
 
  app.use((err,req,res,next) => {
 

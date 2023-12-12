@@ -4,7 +4,8 @@ import dotenv from 'dotenv';
 import userRoutes from '../api/routes/user.route.js'
 import authRoutes from '../api/routes/auth.route.js'
 dotenv.config();
-import cors from "cors"
+import cors from "cors";
+import messageRoute from "./routes/message.route.js";
 import cookieParser from "cookie-parser";
 const app = express();
 import gigRoutes from '../api/routes/gig.route.js'
@@ -41,7 +42,8 @@ app.use(cookieParser())
  app.use("/api/reviews", reviewRoutes);
  app.use("/api/orders", orderRoutes);
  app.use("/api/conversations", conversationRoute);
-
+ app.use("/api/messages", messageRoute);
+ 
  app.use((err,req,res,next) => {
 
   const errorStatus = err.status || 500;

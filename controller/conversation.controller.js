@@ -1,6 +1,8 @@
 import createError from "../utils/createError.js";
 // import Conversation from "../models/conversation.models.js";
 import Conversation from '../models/conversation.models.js'
+
+
 export const createConversation = async (req, res, next) => {
   const newConversation = new Conversation({
     id: req.isSeller ? req.userId + req.body.to : req.body.to + req.userId,

@@ -2,10 +2,12 @@ import Gig from "../models/gig.model.js";
 import createError from "../utils/createError.js";
 
 export const createGig = async (req, res, next) => {
+
   if (!req.isSeller)
     return next(createError(403, "Only sellers can create a gig!"));
 
   const newGig = new Gig({
+    //  this userId: req.userId, information is coming from veryfyToken
     userId: req.userId,
     ...req.body,
   });
@@ -16,7 +18,9 @@ export const createGig = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+
 };
+
 export const deleteGig = async (req, res, next) => {
   try {
     const gig = await Gig.findById(req.params.id);
@@ -29,6 +33,8 @@ export const deleteGig = async (req, res, next) => {
     next(err);
   }
 };
+
+
 export const getGig = async (req, res, next) => {
   try {
     const gig = await Gig.findById(req.params.id);
@@ -38,23 +44,26 @@ export const getGig = async (req, res, next) => {
     next(err);
   }
 };
+
+
 export const getGigs = async (req, res, next) => {
-  const q = req.query;
+  const q = req.query; // Extracting query parameters from the request
   const filters = {
-    ...(q.userId && { userId: q.userId }),
-    ...(q.cat && { cat: q.cat }),
+    ...(q.userId && { userId: q.userId }), // Filtering by userId if provided
+    ...(q.cat && { cat: q.cat }), // Filtering by category if provided
     ...((q.min || q.max) && {
       price: {
-        ...(q.min && { $gt: q.min }),
-        ...(q.max && { $lt: q.max }),
+        ...(q.min && { $gt: q.min }), // Minimum price filter
+        ...(q.max && { $lt: q.max }), // Maximum price filter
       },
     }),
-    ...(q.search && { title: { $regex: q.search, $options: "i" } }),
+    ...(q.search && { title: { $regex: q.search, $options: "i" } }), // Searching by title if provided
   };
+
   try {
-    const gigs = await Gig.find(filters).sort({ [q.sort]: -1 });
-    res.status(200).send(gigs);
+    const gigs = await Gig.find(filters).sort({ [q.sort]: -1 }); // Finding gigs with applied filters and sorting
+    res.status(200).send(gigs); // Sending the retrieved gigs in the response
   } catch (err) {
-    next(err);
+    next(err); // Passing any error to the next middleware
   }
 };

@@ -6,8 +6,8 @@ import Gig from "../models/gig.model.js";
 
 
 export const intent = async (req, res, next) => {
-  const stripe = new Stripe(process.env.STRIPE);
 
+  const stripe = new Stripe(process.env.STRIPE);
   const gig = await Gig.findById(req.params.id);
 
   const paymentIntent = await stripe.paymentIntents.create({
@@ -27,9 +27,7 @@ export const intent = async (req, res, next) => {
     price: gig.price,
     payment_intent: paymentIntent.id,
   });
-
   await newOrder.save();
-
   res.status(200).send({
     clientSecret: paymentIntent.client_secret,
   });
@@ -37,12 +35,12 @@ export const intent = async (req, res, next) => {
 
 
 export const getOrders = async (req, res, next) => {
+
   try {
     const orders = await Order.find({
       ...(req.isSeller ? { sellerId: req.userId } : { buyerId: req.userId }),
       isCompleted: true,
     });
-
     res.status(200).send(orders);
   } catch (err) {
     next(err);

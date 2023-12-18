@@ -4,23 +4,29 @@ import Gig from "../models/gig.model.js";
 import reviewModel from "../models/review.model.js";
 
 export const createReview = async (req, res, next) => {
+
   if (req.isSeller)
     return next(createError(403, "Sellers can't create a review!"));
 
   const newReview = new Review({
+
     userId: req.userId,
     gigId: req.body.gigId,
     desc: req.body.desc,
     star: req.body.star,
+    
   });
 
   try {
+
     const review = await Review.findOne({
+
       gigId: req.body.gigId,
       userId: req.userId,
+      
     });
 
-    if (review)
+    if (!review)
       return next(
         createError(403, "You have already created a review for this gig!")
       );
@@ -28,12 +34,12 @@ export const createReview = async (req, res, next) => {
     //TODO: check if the user purchased the gig.
 
     const savedReview = await newReview.save();
-
     await Gig.findByIdAndUpdate(req.body.gigId, {
       $inc: { totalStars: req.body.star, starNumber: 1 },
     });
     res.status(201).send(savedReview);
-  } catch (err) {
+  } 
+  catch (err) {
     next(err);
   }
 };

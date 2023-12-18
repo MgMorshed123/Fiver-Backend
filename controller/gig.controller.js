@@ -47,6 +47,7 @@ export const getGig = async (req, res, next) => {
 
 
 export const getGigs = async (req, res, next) => {
+  
   const q = req.query; // Extracting query parameters from the request
   const filters = {
     ...(q.userId && { userId: q.userId }), // Filtering by userId if provided
@@ -57,12 +58,15 @@ export const getGigs = async (req, res, next) => {
         ...(q.max && { $lt: q.max }), // Maximum price filter
       },
     }),
-    ...(q.search && { title: { $regex: q.search, $options: "i" } }), // Searching by title if provided
+    ...(q.search && { title: { $regex: q.search, $options: "i" } }), 
+    // Searching by title if provided
   };
 
   try {
-    const gigs = await Gig.find(filters).sort({ [q.sort]: -1 }); // Finding gigs with applied filters and sorting
-    res.status(200).send(gigs); // Sending the retrieved gigs in the response
+    const gigs = await Gig.find(filters).sort({ [q.sort]: -1 }); 
+    // Finding gigs with applied filters and sorting
+    res.status(200).send(gigs);
+     // Sending the retrieved gigs in the response
   } catch (err) {
     next(err); // Passing any error to the next middleware
   }

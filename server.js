@@ -31,7 +31,7 @@ console.log( "token",  process.env.jwt_key)
 
 
 
-//  if you are using cookieparser you have touse this credentials : true}
+//  if you are using cookieparser you have to use this credentials : true}
 app.use(cors({origin : "http://localhost:5173", credentials : true}))
 
 app.use(express.json())

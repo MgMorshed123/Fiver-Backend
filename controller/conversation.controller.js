@@ -28,6 +28,7 @@ export const createConversation = async (req, res, next) => {
 
 
 export const updateConversation = async (req, res, next) => {
+
   try {
     const updatedConversation = await Conversation.findOneAndUpdate(
       { id: req.params.id },

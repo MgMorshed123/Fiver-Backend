@@ -16,6 +16,7 @@ export const verifyToken = (req, res, next) => {
     // If the token is valid, extract user information from the payload
     req.userId = payload.id;
     req.isSeller = payload.isSeller;
+// are extracting information from the payload of the JSON Web Token (JWT). The payload is the decoded content of the token, which includes any data that was embedded when the token was created.
 
     // Call the next middleware in the chain
     next();

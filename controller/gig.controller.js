@@ -21,17 +21,22 @@ export const createGig = async (req, res, next) => {
 
 };
 
+
 export const deleteGig = async (req, res, next) => {
+
   try {
     const gig = await Gig.findById(req.params.id);
+  //  this userId: req.userId, information is coming from veryfyToken
+  //    this gig.userId   information is coming from when we are creating a gig 
     if (gig.userId !== req.userId)
-      return next(createError(403, "You can delete only your gig!"));
+    
+      return next(createError(403, "You can delete only your gig!"))
 
     await Gig.findByIdAndDelete(req.params.id);
     res.status(200).send("Gig has been deleted!");
-  } catch (err) {
+    } catch (err) {
     next(err);
-  }
+   }
 };
 
 
